@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/fixit-devices/static/css/main.eee420e0.chunk.css",
+    "main.js": "/fixit-devices/static/js/main.4eeb26eb.chunk.js",
+    "main.js.map": "/fixit-devices/static/js/main.4eeb26eb.chunk.js.map",
+    "runtime~main.js": "/fixit-devices/static/js/runtime~main.8c885d43.js",
+    "runtime~main.js.map": "/fixit-devices/static/js/runtime~main.8c885d43.js.map",
+    "static/js/2.16793f06.chunk.js": "/fixit-devices/static/js/2.16793f06.chunk.js",
+    "static/js/2.16793f06.chunk.js.map": "/fixit-devices/static/js/2.16793f06.chunk.js.map",
+    "index.html": "/fixit-devices/index.html",
+    "precache-manifest.ba5dbc4a79325d524749d63c7f034b87.js": "/fixit-devices/precache-manifest.ba5dbc4a79325d524749d63c7f034b87.js",
+    "service-worker.js": "/fixit-devices/service-worker.js",
+    "static/css/main.eee420e0.chunk.css.map": "/fixit-devices/static/css/main.eee420e0.chunk.css.map"
+  }
+}
