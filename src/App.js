@@ -1,78 +1,25 @@
 import React, { Component } from 'react';
 
 import DeviceCollection from './components/DeviceCollection'
-import DatabaseFactory from './Db'
+import DatabaseFactory from './stores/Db'
+import Ifixit from './stores/Ifixit'
 import './App.css';
 
 
-
 class App extends Component {
+  _ALPHANUMERIC = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
   constructor(props) {
     super(props);
-    this.state = {
-        loginPage: [],
-        mainPage: []
-      };
-
+    this.state = {};
     this.storage = window.localStorage;
     this.database = DatabaseFactory.getInstance();
     this.sessionId = this._get_session();
-    this._setup_db(false);
-  }
-
-  _get_session = () => {
-    var n_chars = 6;
-    var match = document.cookie.match(/if_sid=(.*);?/);
-    var sid = ''
-
-    if (match != null) 
-    {
-      if (match instanceof Array)
-        sid = match[0].substring(n_chars + 1)
-      else
-        sid = match.substring(n_chars + 1)
-
-      console.log('retrieved sessionId: ' + sid);
-    }
-    else
-    {
-      sid = Math.random().toString(36).substring(n_chars + 1);
-      document.cookie = 'if_sid=' + sid;
-
-      console.log('generated sessionId: ' + sid);
-    }
-
-    return sid;
-  }
-
-  _setup_db = (force_fetch=false) => {
-    var need_fetch = true;
-    var today = new Date();
-
-    if (!force_fetch)
-    {
-      // we'll do a fetch only if it hasn't been done in the last 48 hours
-      var fetch_key = this.sessionId + '_fetch';
-      var last_fetch = this.storage.getItem(fetch_key);
-      if (last_fetch != null)
-      {
-          last_fetch = Date.parse(last_fetch);
-          var elapsed = (today.getTime() - last_fetch) / 1000;
-          var elapsed_days = elapsed / (60 * 60 * 24)
-
-          if (elapsed_days <= 2)
-            need_fetch = false;
-      }
-    }
-
-    if (need_fetch)
-    {
-      this.database.fetch();
-      this.storage.setItem(this.sessionId + '_fetch', today.toString());
-    }
+    this.ifixt = new Ifixit();
   }
 
   render() {
+    
     return (
         <div className="App">
           
@@ -80,6 +27,37 @@ class App extends Component {
     );
   }
 
+  _clear_session() {
+    document.cookie = 'if_sid=; expires=' + new Date().toUTCString() + ';';
+  }
+
+  _get_session(force_new=false) {
+    if (force_new) {
+      this._clear_session();
+    }
+
+    let sid = ''
+    const n_chars = 12;
+    const match = document.cookie.match(/if_sid=(?<sid>[a-zA-Z0-9]*);?/);
+    debugger;
+    if (match != null) 
+    {
+      sid = match.groups['sid'];
+      console.log('retrieved sessionId: ' + sid);
+    }
+    else
+    {
+      let i = 0;
+      while (i++ < n_chars)
+      {
+        sid += this._ALPHANUMERIC.charAt(Math.floor(Math.random() * this._ALPHANUMERIC.length));
+      }
+      document.cookie = 'if_sid=' + sid;
+      console.log('generated sessionId: ' + sid);
+    }
+
+    return sid;
+  }
 
 }
 
